@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 import mysql.connector
 from utils import connect_to_database  # Importação da função de conexão
-
+from datetime import datetime
+import pytz
 posts_bp = Blueprint('posts', __name__)
 
 # Rota para listar todos os posts
@@ -57,14 +58,22 @@ def create_post():
     if not titulo or not conteudo or not autor_id:
         return jsonify({"message": "Por favor, forneça título, conteúdo e ID do autor"}), 400
 
+    # Obtém o horário de Brasília
+    brasilia_tz = pytz.timezone('America/Sao_Paulo')
+    agora = datetime.now(brasilia_tz)
+    data_atual = agora.strftime('%Y-%m-%d %H:%M:%S')
+
     connection = connect_to_database()
     if not connection:
         return jsonify({"message": "Erro interno do servidor ao conectar ao banco de dados"}), 500
 
     try:
         cursor = connection.cursor()
-        sql = "INSERT INTO posts (titulo, conteudo, autor_id) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (titulo, conteudo, autor_id))
+        sql = """
+        INSERT INTO posts (titulo, conteudo, autor_id, data_criacao)
+        VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(sql, (titulo, conteudo, autor_id, data_atual))
         connection.commit()
         return jsonify({"message": "Post criado com sucesso"}), 201
     except mysql.connector.Error as e:
