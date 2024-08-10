@@ -70,7 +70,7 @@ def create_post():
     try:
         cursor = connection.cursor()
         sql = """
-        INSERT INTO posts (titulo, conteudo, autor_id, data_criacao)
+        INSERT INTO posts (titulo, conteudo, autor_id, data_publicacao)
         VALUES (%s, %s, %s, %s)
         """
         cursor.execute(sql, (titulo, conteudo, autor_id, data_atual))
