@@ -3,5 +3,8 @@ curl -X POST -H "Content-Type: application/json" -d "{\"nome\": \"pamela\",\"cpf
 
 curl -X POST -H "Content-Type: application/json" -d "{\"nome\": \"pamela\",\"cpf\": \"504.619.290-07\", \"senha\": \"123456\", \"email\": \"pamela@gmail.com\"}" https://api-python-tarde-37668b622097.herokuapp.com/login
 
+1. Atualize o requirements.txt Locamente
 
 
+
+pip freeze > requirements.txt
