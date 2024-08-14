@@ -14,15 +14,29 @@ def get_posts():
 
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT id, titulo, conteudo, autor_id, data_publicacao FROM posts")
+        # Atualizando a consulta para incluir o nome do autor
+        query = """
+        SELECT 
+            posts.id, 
+            posts.titulo, 
+            posts.conteudo, 
+            posts.autor_id, 
+            posts.data_publicacao,
+            usuarios.nome AS autor_nome
+        FROM 
+            posts
+        JOIN 
+            usuarios ON posts.autor_id = usuarios.id
+        """
+        cursor.execute(query)
         posts = cursor.fetchall()
         return jsonify(posts)
     except mysql.connector.Error as e:
         return jsonify({"message": "Erro ao buscar os posts", "error": str(e)}), 500
     finally:
-        if 'cursor' in locals():
+        if cursor:
             cursor.close()
-        if 'connection' in locals():
+        if connection:
             connection.close()
 
 # Rota para buscar um post específico pelo ID
