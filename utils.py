@@ -1,12 +1,12 @@
 import mysql.connector
-import os
+
 
 # Função para conectar ao banco de dados
 def connect_to_database():
-    db_host = os.getenv('DB_HOST')
-    db_user = os.getenv('DB_USER')
-    db_password = os.getenv('DB_PASSWORD')
-    db_name = os.getenv('DB_NAME')
+    db_host = 'localhost'
+    db_user = 'root'
+    db_password = ''
+    db_name = 'aula_django'
 
     try:
         connection = mysql.connector.connect(
@@ -19,3 +19,5 @@ def connect_to_database():
     except mysql.connector.Error as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
         return None
+    
+    
