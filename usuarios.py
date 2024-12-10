@@ -32,7 +32,7 @@ def register():
         hashed_password = generate_password_hash(senha, method='pbkdf2:sha256:600000')
 
         # Inserir novo usuário no banco de dados
-        sql = "INSERT INTO usuarios (nome, cpf, senha, email) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO usuarios (nome, senha, email, cpf) VALUES (%s, %s, %s, %s)"
         cursor.execute(sql, (nome, cpf, hashed_password, email))
         connection.commit()
 
